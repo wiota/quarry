@@ -19,18 +19,19 @@ def create_app(hostname):
 
     app.host = tools.get_host_by_hostname(hostname)
 
-    @app.route('/<media_name>', subdomain='media')
-    @cross_origin()
-    def media(media_name):
-        return tools.retrieve_image(media_name, app.host.bucketname)
-
     if app.host is None:
         # This host doesn't exist. Add a ping endpoint for monitoring.
         @app.route('/ping')
         def ping():
-            return ''
+            return hostname
 
         return app
+
+    @app.route('/<media_name>')
+    @cross_origin()
+    def media(media_name):
+        print media_name, app.host.bucketname
+        return tools.retrieve_image(media_name, app.host.bucketname)
 
     # Set the error handler/mailer
     if not app.debug:
