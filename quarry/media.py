@@ -8,8 +8,8 @@ mod = Blueprint('media', __name__)
 
 
 @mod.route('/<media_name>')
-@mod.route('/image/<media_name>') # Temporary
+@mod.route('/image/<media_name>')  # Temporary
 @cross_origin()
-@headers({'Cache-Control':'public, max-age=2675309'})
+@headers({'Cache-Control': 'public, max-age=2675309'})
 def media(media_name):
-    return retrieve_image(media_name, app.host.bucketname)
+    return app.media.redirect(media_name)
